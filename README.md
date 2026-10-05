@@ -6,7 +6,7 @@ If you use Windows, you can install Windows Subsystem for Linux (WSL). WSL gives
 
 ## Where am I? (`pwd`)
 
-`pwd` stands for **print working directory**. It shows the folder you are currently in.
+`pwd` stands for **print working directory**. It shows the directory you are currently in.
 
 ```bash
 pwd
@@ -24,7 +24,7 @@ This is useful when you are not sure where you are in the file system.
 
 ## What's in this directory? (`ls`)
 
-`ls` lists the files and folders in your current directory.
+`ls` lists the files and directorys in your current directory.
 
 ```bash
 ls
