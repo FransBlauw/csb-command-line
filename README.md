@@ -808,7 +808,7 @@ creates a backup directory and copies a project into it.
 
 ## Scripting
 
-Once you know several command-line commands, you can put them together in a file and run them as a **script**.
+You can put several command-line commands together in a file and run them as a **script**.
 
 A shell script is simply a text file containing commands that the shell executes in order.
 
