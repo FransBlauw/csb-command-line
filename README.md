@@ -200,6 +200,155 @@ Again, use this carefully. A recursive removal can delete many files at once.
 
 ---
 
+## Directory traversal
+
+You do not always need to move into a directory with `cd` before working with files inside it. Commands can refer to files and directories using **paths**.
+
+A path describes where something is located in the file system.
+
+Suppose you have this structure:
+
+```text
+/home/student/
+├── Documents/
+│   ├── essay.txt
+│   └── notes.txt
+└── projects/
+    └── website/
+        └── index.html
+```
+
+If you are currently in:
+
+```text
+/home/student
+```
+
+you can display `essay.txt` without first entering `Documents`:
+
+```bash
+cat Documents/essay.txt
+```
+
+You can also copy it somewhere else:
+
+```bash
+cp Documents/essay.txt projects/
+```
+
+### Relative paths
+
+A **relative path** describes a location relative to your current directory.
+
+For example:
+
+```bash
+Documents/essay.txt
+```
+
+means:
+
+```text
+start in the current directory
+go into Documents
+find essay.txt
+```
+
+The special name:
+
+```text
+..
+```
+
+means the parent directory, or one level higher in the directory tree.
+
+If you are in:
+
+```text
+/home/student/Documents
+```
+
+then:
+
+```bash
+cat ../projects/website/index.html
+```
+
+means:
+
+```text
+go up from Documents to /home/student
+go into projects
+go into website
+open index.html
+```
+
+You can go up more than one level:
+
+```bash
+cd ../..
+```
+
+or refer to a file several levels higher:
+
+```bash
+cat ../../notes.txt
+```
+
+The special name:
+
+```text
+.
+```
+
+means the current directory.
+
+For example:
+
+```bash
+./script.sh
+```
+
+means "the file called `script.sh` in the current directory".
+
+### Absolute paths
+
+An **absolute path** gives the complete location starting from the root of the file system.
+
+Absolute paths begin with `/`.
+
+For example:
+
+```bash
+cat /home/student/Documents/essay.txt
+```
+
+This refers to the same file regardless of which directory you are currently in.
+
+You can use paths with most commands:
+
+```bash
+cp ../notes.txt .
+```
+
+copies `notes.txt` from the parent directory into the current directory.
+
+```bash
+mv project/file.txt ../backup/
+```
+
+moves a file from the `project` directory into a neighbouring `backup` directory.
+
+```bash
+wc -w ~/Documents/essay.txt
+```
+
+counts the words in a file inside your home directory.
+
+Thinking in terms of paths is important. You do not need to constantly use `cd` to move around before doing something.
+
+---
+
 ## Create an empty file (`touch`)
 
 `touch` can create an empty file.
@@ -305,32 +454,6 @@ For very long files, `less` is usually more convenient.
 
 ---
 
-## Count words, lines and characters (`wc`)
-
-`wc` stands for **word count**.
-
-```bash
-wc notes.txt
-```
-
-It normally shows the number of lines, words and bytes in the file.
-
-You can ask for something specific:
-
-```bash
-wc -l notes.txt
-```
-
-counts lines.
-
-```bash
-wc -w notes.txt
-```
-
-counts words.
-
----
-
 ## Read long files (`less`)
 
 `less` lets you view a file one screen at a time.
@@ -405,6 +528,114 @@ man cat
 ```
 
 When you are unsure how a command works, `--help` and `man` are good places to start.
+
+---
+
+## The `PATH` and finding programs
+
+When you type a command such as:
+
+```bash
+ls
+```
+
+the shell needs to find the program that implements `ls`.
+
+Executable programs are often called **binaries** or **executables**.
+
+Many of them are stored in directories such as:
+
+```text
+/usr/bin
+/bin
+/usr/local/bin
+```
+
+For example, on many Linux systems you can find `ls` at:
+
+```text
+/usr/bin/ls
+```
+
+You could run it using its complete path:
+
+```bash
+/usr/bin/ls
+```
+
+but normally you simply type:
+
+```bash
+ls
+```
+
+This works because the shell uses a special environment variable called `PATH`.
+
+You can display it with:
+
+```bash
+echo $PATH
+```
+
+You may see something like:
+
+```text
+/usr/local/bin:/usr/bin:/bin
+```
+
+The directories are separated by `:`.
+
+When you type:
+
+```bash
+ls
+```
+
+the shell searches these directories in order until it finds an executable called `ls`.
+
+Conceptually, it tries something like:
+
+```text
+/usr/local/bin/ls
+/usr/bin/ls
+/bin/ls
+```
+
+and runs the first matching program it finds.
+
+### Finding where a command is located
+
+The `which` command can show the path of many commands:
+
+```bash
+which ls
+```
+
+Example output:
+
+```text
+/usr/bin/ls
+```
+
+Another example:
+
+```bash
+which node
+```
+
+might produce:
+
+```text
+/usr/bin/node
+```
+
+The shell also has a useful command called `command -v`:
+
+```bash
+command -v ls
+```
+
+This can also tell you what will run when you enter a command.
 
 ---
 
@@ -572,3 +803,172 @@ cp -r project backup/
 ```
 
 creates a backup directory and copies a project into it.
+
+---
+
+## Scripting
+
+Once you know several command-line commands, you can put them together in a file and run them as a **script**.
+
+A shell script is simply a text file containing commands that the shell executes in order.
+
+For example, create a file:
+
+```bash
+touch backup.sh
+```
+
+You could put the following commands inside it:
+
+```bash
+mkdir backup
+cp *.txt backup/
+ls -l backup/
+```
+
+When the script runs, the shell executes the commands from top to bottom.
+
+This is useful when you regularly perform the same sequence of commands.
+
+### Running a script with `bash`
+
+You can run a shell script by giving it to `bash`:
+
+```bash
+bash backup.sh
+```
+
+You do not need to make the file executable when running it this way.
+
+For example, a script called `report.sh` might contain:
+
+```bash
+pwd
+echo "Files in this directory:"
+ls
+echo "Number of text files:"
+ls *.txt | wc -l
+```
+
+Run it with:
+
+```bash
+bash report.sh
+```
+
+The commands are executed just as if you had typed them into the terminal yourself.
+
+### Making a script executable
+
+Shell scripts often begin with a line called a **shebang**:
+
+```bash
+#!/usr/bin/env bash
+```
+
+A complete script might look like:
+
+```bash
+#!/usr/bin/env bash
+
+echo "Creating backup directory"
+mkdir backup
+
+echo "Copying text files"
+cp *.txt backup/
+
+echo "Backup contains:"
+ls -l backup/
+```
+
+The shebang tells the operating system which program should run the script.
+
+You can then make the file executable:
+
+```bash
+chmod +x backup.sh
+```
+
+and run it:
+
+```bash
+./backup.sh
+```
+
+### Variables in scripts
+
+The same variables you use interactively can also be used in scripts.
+
+For example:
+
+```bash
+#!/usr/bin/env bash
+
+name="Alex"
+
+echo "Hello $name"
+echo "Your current directory is:"
+pwd
+```
+
+You can also use variables to avoid repeating paths:
+
+```bash
+#!/usr/bin/env bash
+
+backup="backup"
+
+mkdir $backup
+cp *.txt $backup/
+ls -l $backup/
+```
+
+When a variable contains a filename or directory name that might include spaces, putting it inside quotes is safer:
+
+```bash
+directory="My Documents"
+
+ls "$directory"
+```
+
+### Combining commands in scripts
+
+Scripts become useful because you can combine the ideas from earlier sections.
+
+For example:
+
+```bash
+#!/usr/bin/env bash
+
+echo "Creating report"
+
+pwd > report.txt
+echo "Files:" >> report.txt
+ls -al >> report.txt
+echo "Word count:" >> report.txt
+wc -w essay.txt >> report.txt
+
+echo "Report created"
+```
+
+This script creates a file called `report.txt` containing information produced by several commands.
+
+Another example:
+
+```bash
+#!/usr/bin/env bash
+
+mkdir backup
+cp Documents/*.txt backup/
+ls backup/ > backup-files.txt
+wc -l backup-files.txt
+```
+
+This:
+
+```text
+creates a backup directory
+copies text files into it
+stores a list of the copied files
+counts how many entries are in that list
+```
