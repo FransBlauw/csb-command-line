@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap');
+
+body {
+	font-family: "Open Sans", "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif;
+}
+
+h1,
+h2,
+h3 {
+	font-weight: 600;
+}
+
+li p {
+	margin: 0.5rem auto;
+}
+
+table>tbody>tr>td,
+table>thead>tr>th {
+	border: 1px solid #d8dee4;
+}
+
+table>thead>tr>th {
+	font-weight: 600;
+}
+
+table>thead {
+	background-color: #ebf0f6;
+}
+
+table tr:nth-child(2n) {
+	background-color: #f6f8fa;
+}
+
+.hljs {
+    page-break-inside:avoid;
+}

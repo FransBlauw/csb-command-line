@@ -4,6 +4,8 @@ Most of the command-line commands in this guide work in much the same way across
 
 If you use Windows, you can install Windows Subsystem for Linux (WSL). WSL gives you a Linux environment inside Windows, so you can use the same commands and tools without needing a separate Linux computer. It is also worth getting familiar with WSL, since Linux and command-line tools are commonly used in programming, development and server environments.
 
+---
+
 ## Where am I? (`pwd`)
 
 `pwd` stands for **print working directory**. It shows the directory you are currently in.
