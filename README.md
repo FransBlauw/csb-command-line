@@ -675,7 +675,27 @@ you might see something like:
 -rw-r--r-- 1 student students 1200 Oct 5 12:00 notes.txt
 ```
 
-The characters at the beginning describe the file's permissions.
+The first character describes the file type. Regular files are noted as '-', a directory as 'd' and a symbolic link as 'l'.
+
+The following nine characters represent the file permissions. They are grouped by three. Group 1 shows the owner permissions, group 2 shows the group permissions and group 3 shows others permissions.
+
+In our example that means the following:
+- Owner: Read, Write
+- Group: Read
+- Others: Read
+
+```text
+-rw-r--r-- 1 students students 1200 Oct 5 12:00 notes.txt
+|[-][-][-]-  [------] [---]
+| |  |  | |     |       |
+| |  |  | |     |       +------------> 7. Group
+| |  |  | |     +--------------------> 6. Owner
+| |  |  | +--------------------------> 5. Alternate Access Method
+| |  |  +----------------------------> 4. Others Permissions
+| |  +-------------------------------> 3. Group Permissions
+| +----------------------------------> 2. Owner Permissions
++------------------------------------> 1. File Type
+```
 
 The three main permissions are:
 
